@@ -1,9 +1,7 @@
 package pl.stamp;
 
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -11,12 +9,12 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import pl.stamp.controllers.FileChooserController;
+import pl.stamp.controllers.ImageViewController;
+import pl.stamp.listeners.SelectedImageListener;
 
 import java.io.File;
-import java.util.Optional;
 
 public class Controller {
 
@@ -65,7 +63,12 @@ public class Controller {
     /**
      * Selected image
      */
-    private ObservableValue<File> selectedImage;
+    private ObservableValue<File> selectedImage = new SimpleObjectProperty<>();
+
+    /**
+     * Image view controller
+     */
+    private ImageViewController imageViewController;
 
     /**
      * Method called on window show
@@ -73,7 +76,7 @@ public class Controller {
     public void handleWindowShownEvent() {
         this.setTitleLabelText();
         this.setFileChooserManagement();
-        this.setSelectedFileManagement();
+        this.setImageViewManagement();
     }
 
     /**
@@ -81,23 +84,29 @@ public class Controller {
      */
     private void setTitleLabelText() {
         this.titleLabel.setText(Main.getTITLE());
-        this.titleLabel.setAlignment(Pos.CENTER);
     }
 
     /**
      * Managing choosing file
      */
     private void setFileChooserManagement() {
+        SelectedImageListener selectedImageListener = new SelectedImageListener(this.imageView);
         this.fileChooserButton.addEventFilter(MouseEvent.MOUSE_PRESSED,
-                event -> selectedImage = new SimpleObjectProperty<>(FileChooserController.trySelectFile().orElse(selectedImage.getValue())));
+                event -> {
+                    selectedImage = new SimpleObjectProperty<>(FileChooserController.trySelectFile().orElse(selectedImage.getValue()));
+                    if (selectedImage.getValue() != null) {
+                        selectedImageListener.addSelectedImageToView(selectedImage.getValue());
+                    }
+                });
     }
 
     /**
-     * Managing events on change selected file value
+     * Managing operations on ImageView node
      */
-    private void setSelectedFileManagement() {
-        this.selectedImage.addListener((observable, oldValue, newValue) -> {
-
-        });
+    private void setImageViewManagement() {
+        this.imageViewController = new ImageViewController(this.imageView);
+        this.imageViewController.setStempleSizeSlider(this.stempleSizeSlider);
+        this.imageViewController.addEventListener();
     }
+
 }

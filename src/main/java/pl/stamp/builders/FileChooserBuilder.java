@@ -12,7 +12,7 @@ public class FileChooserBuilder {
     public static FileChooser getFileChooser() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Select BMP file");
-        fileChooser.setInitialDirectory(new File("C:\\"));
+        fileChooser.setInitialDirectory(new File("."));
         fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("BMP File", "*.bmp"));
 
         return fileChooser;

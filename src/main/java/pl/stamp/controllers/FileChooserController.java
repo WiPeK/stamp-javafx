@@ -13,6 +13,7 @@ public class FileChooserController {
 
     public static Optional<File> trySelectFile() {
         FileChooser fileChooser = FileChooserBuilder.getFileChooser();
-        return Optional.of(fileChooser.showOpenDialog(null));
+        File result = fileChooser.showOpenDialog(null);
+        return Optional.of(result);
     }
 }
