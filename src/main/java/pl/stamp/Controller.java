@@ -3,7 +3,6 @@ package pl.stamp;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
@@ -11,7 +10,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import pl.stamp.controllers.FileChooserController;
-import pl.stamp.controllers.ImageViewController;
+import pl.stamp.controllers.imageview.ImageViewCursorController;
+import pl.stamp.controllers.imageview.ImageViewMarkerController;
 import pl.stamp.listeners.SelectedImageListener;
 
 import java.io.File;
@@ -68,7 +68,9 @@ public class Controller {
     /**
      * Image view controller
      */
-    private ImageViewController imageViewController;
+    private ImageViewCursorController imageViewCursorController;
+
+    private ImageViewMarkerController imageViewMarkerController;
 
     /**
      * Method called on window show
@@ -104,9 +106,14 @@ public class Controller {
      * Managing operations on ImageView node
      */
     private void setImageViewManagement() {
-        this.imageViewController = new ImageViewController(this.imageView);
-        this.imageViewController.setStempleSizeSlider(this.stempleSizeSlider);
-        this.imageViewController.addEventListener();
+        this.imageViewCursorController = new ImageViewCursorController(this.imageView);
+        this.imageViewCursorController.setStempleSizeSlider(this.stempleSizeSlider);
+        this.imageViewCursorController.addEventListener();
+
+        this.imageViewMarkerController = new ImageViewMarkerController(this.imageView);
+        this.imageViewMarkerController.setStempleSizeSlider(this.stempleSizeSlider);
+        this.imageViewMarkerController.addEventListener();
+        this.imageViewMarkerController.setSelectedAreaImageView(this.selectedAreaImageView);
     }
 
 }
