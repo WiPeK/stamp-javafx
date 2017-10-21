@@ -9,7 +9,8 @@ import javafx.scene.control.Slider;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
-import pl.stamp.controllers.FileChooserController;
+import pl.stamp.services.FileChooserService;
+import pl.stamp.controllers.ImageSaverController;
 import pl.stamp.controllers.imageview.ImageViewCursorController;
 import pl.stamp.controllers.imageview.ImageViewMarkerController;
 import pl.stamp.listeners.SelectedImageListener;
@@ -79,6 +80,7 @@ public class Controller {
         this.setTitleLabelText();
         this.setFileChooserManagement();
         this.setImageViewManagement();
+        this.setSavingButtonManagement();
     }
 
     /**
@@ -95,9 +97,12 @@ public class Controller {
         SelectedImageListener selectedImageListener = new SelectedImageListener(this.imageView);
         this.fileChooserButton.addEventFilter(MouseEvent.MOUSE_PRESSED,
                 event -> {
-                    selectedImage = new SimpleObjectProperty<>(FileChooserController.trySelectFile().orElse(selectedImage.getValue()));
+                    selectedImage = new SimpleObjectProperty<>(FileChooserService.trySelectFile().orElse(selectedImage.getValue()));
                     if (selectedImage.getValue() != null) {
                         selectedImageListener.addSelectedImageToView(selectedImage.getValue());
+                        this.savingButton.setDisable(false);
+                    } else {
+                        this.savingButton.setDisable(true);
                     }
                 });
     }
@@ -116,4 +121,10 @@ public class Controller {
         this.imageViewMarkerController.setSelectedAreaImageView(this.selectedAreaImageView);
     }
 
+
+    private void setSavingButtonManagement() {
+        ImageSaverController imageSaverController = new ImageSaverController(this.savingButton);
+        imageSaverController.setImageView(this.imageView);
+        imageSaverController.addEventListener();
+    }
 }

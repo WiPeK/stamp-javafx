@@ -2,6 +2,7 @@ package pl.stamp.listeners;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.WritableImage;
 
 import java.io.File;
 import java.io.FileInputStream;
