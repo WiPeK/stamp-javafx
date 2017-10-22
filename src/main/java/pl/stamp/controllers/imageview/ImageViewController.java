@@ -21,6 +21,8 @@ public abstract class ImageViewController {
     public void setStempleSizeSlider(Slider stempleSizeSlider) {
         this.stempleSizeSlider = stempleSizeSlider;
 
+        this.radius = this.stempleSizeSlider.getValue();
+
         this.stempleSizeSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
             radius = newValue.doubleValue();
         });
