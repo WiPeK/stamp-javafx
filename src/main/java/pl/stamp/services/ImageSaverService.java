@@ -16,7 +16,7 @@ public class ImageSaverService {
     public static void saveImage(File file, Image image) {
         BufferedImage bImage = SwingFXUtils.fromFXImage(image, null);
         try {
-            ImageIO.write(bImage, "bmp", file);
+            ImageIO.write(bImage, "PNG", file);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

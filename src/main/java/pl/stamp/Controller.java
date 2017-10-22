@@ -67,13 +67,6 @@ public class Controller {
     private ObservableValue<File> selectedImage = new SimpleObjectProperty<>();
 
     /**
-     * Image view controller
-     */
-    private ImageViewCursorController imageViewCursorController;
-
-    private ImageViewMarkerController imageViewMarkerController;
-
-    /**
      * Method called on window show
      */
     public void handleWindowShownEvent() {
@@ -111,14 +104,14 @@ public class Controller {
      * Managing operations on ImageView node
      */
     private void setImageViewManagement() {
-        this.imageViewCursorController = new ImageViewCursorController(this.imageView);
-        this.imageViewCursorController.setStempleSizeSlider(this.stempleSizeSlider);
-        this.imageViewCursorController.addEventListener();
+        ImageViewCursorController imageViewCursorController = new ImageViewCursorController(this.imageView);
+        imageViewCursorController.setStempleSizeSlider(this.stempleSizeSlider);
+        imageViewCursorController.addEventListener();
 
-        this.imageViewMarkerController = new ImageViewMarkerController(this.imageView);
-        this.imageViewMarkerController.setStempleSizeSlider(this.stempleSizeSlider);
-        this.imageViewMarkerController.addEventListener();
-        this.imageViewMarkerController.setSelectedAreaImageView(this.selectedAreaImageView);
+        ImageViewMarkerController imageViewMarkerController = new ImageViewMarkerController(this.imageView);
+        imageViewMarkerController.setStempleSizeSlider(this.stempleSizeSlider);
+        imageViewMarkerController.addEventListener();
+        imageViewMarkerController.setSelectedAreaImageView(this.selectedAreaImageView);
     }
 
 
