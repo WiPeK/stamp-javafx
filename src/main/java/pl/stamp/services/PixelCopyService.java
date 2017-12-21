@@ -7,6 +7,7 @@ import javafx.scene.image.WritableImage;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Krzysztof Adamczyk on 22.10.2017.
@@ -23,7 +24,11 @@ public class PixelCopyService {
                 double rootDistance = Math.sqrt(squaredDx + squaredDy);
 
                 if (rootDistance <= radius) {
-                    copiedPixels.add(pixelReader.getArgb(x, y));
+                    try {
+                        copiedPixels.add(pixelReader.getArgb(x, y));
+                    } catch (IndexOutOfBoundsException e) {
+                        copiedPixels.add(null);
+                    }
                 }
             }
         }
@@ -41,9 +46,13 @@ public class PixelCopyService {
                 double squaredDx = Math.pow((x - radius), 2);
                 double squaredDy = Math.pow((y - radius), 2);
                 double rootDistance = Math.sqrt(squaredDx + squaredDy);
-
+                // todo check pixel is in image if not then put something like empty pixel or null
                 if (rootDistance <= radius) {
-                    writer.setArgb(x, y, copiedPixels.get(listIndex++));
+                    Integer pixel = copiedPixels.get(listIndex++);
+                    if (pixel == null) {
+                        continue;
+                    }
+                    writer.setArgb(x, y, pixel);
                 }
             }
         }
@@ -68,7 +77,11 @@ public class PixelCopyService {
                 if (rootDistance <= radius) {
                     boolean isPixelInImage = x >= 0  && x < width && y >= 0 && y < height;
                     if (isPixelInImage) {
-                        writer.setArgb(x, y, copiedPixels.get(listIndex));
+                        try {
+                            writer.setArgb(x, y, copiedPixels.get(listIndex));
+                        } catch (NullPointerException e) {
+                            continue;
+                        }
                     }
                     listIndex++;
                 }
